@@ -222,6 +222,9 @@ imagenet_style_templates_small = [
     "a weird painting in the style of {}",
     "a large painting in the style of {}",
 ]
+imagenet_templates_chara = [
+    "an illustration of an anime character that captures the characteristics of {}"
+]
 
 
 class TextualInversionDataset(Dataset):
@@ -262,7 +265,13 @@ class TextualInversionDataset(Dataset):
             "lanczos": PIL.Image.LANCZOS,
         }[interpolation]
 
-        self.templates = imagenet_style_templates_small if learnable_property == "style" else imagenet_templates_small
+        self.templates = ""
+        if(learnable_property == "style"):
+            templates = imagenet_style_templates_small
+        elif (learnable_property == "chara"):
+            templates = imagenet_templates_chara
+        else:
+            templates = imagenet_templates_small
         self.flip_transform = transforms.RandomHorizontalFlip(p=self.flip_p)
 
     def __len__(self):
